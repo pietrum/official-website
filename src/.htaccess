@@ -1,9 +1,0 @@
-RewriteEngine On
-
-# przekierowanie na www.*
-RewriteCond %{HTTP_HOST} !^www. [NC]
-RewriteCond %{HTTP_HOST} ![0-9]$ [NC]
-RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [L,R=301]
-
-# przekierowanie zawsze na index.html
-RewriteRule ^([^.]+)$ /index.html

@@ -62,7 +62,6 @@ module.exports = {
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
     new CopyWebpackPlugin([
-      { from: '.htaccess' },
       { from: 'robots.txt' },
     ]),
   ]),
