@@ -1,15 +1,28 @@
-const webpack = require('webpack');
+/**
+ * Load dependencies.
+ */
 const path = require('path');
 
-const debug = process.env.NODE_ENV !== "production";
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+/**
+ * Plugins
+ */
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+/**
+ * Debug
+ */
+const debug = process.env.NODE_ENV !== 'production';
+
+/**
+ * Configuration.
+ */
 module.exports = {
   context: path.join(__dirname, 'src'),
   devtool: debug ? 'inline-source-map' : false,
+  mode: debug ? 'development' : 'production',
   entry: [
     './scripts/site.js',
     './styles/main.scss',
@@ -17,26 +30,29 @@ module.exports = {
   module: {
     rules: [{
       test: /\.scss$/,
-      use: ExtractTextPlugin.extract({
-        use: [{
-          loader: 'css-loader',
-          options: {
-            sourceMap: true,
-          },
-        }, {
-          loader: 'sass-loader',
-          options: {
-            sourceMap: true,
-          },
-        }],
-      }),
+      use: [{
+        loader: MiniCssExtractPlugin.loader,
+        options: {
+          publicPath: '/',
+        },
+      }, {
+        loader: 'css-loader',
+        options: {
+          sourceMap: true,
+        },
+      }, {
+        loader: 'sass-loader',
+        options: {
+          sourceMap: true,
+        },
+      }],
     }, {
       test: /\.js$/,
       exclude: /node_modules/,
       use: [{
         loader: 'babel-loader',
         options: {
-          presets: ['env', 'es2015'],
+          presets: ['env'],
         },
       }, {
         loader: 'eslint-loader',
@@ -44,23 +60,24 @@ module.exports = {
     }],
   },
   output: {
-    filename: 'js/main.[chunkhash].min.js',
+    filename: debug ? 'js/[name].js' : 'js/[name].[hash].min.js',
     path: path.join(__dirname, 'dist'),
     publicPath: '/',
   },
   plugins: [
     // globals
-    new CleanWebpackPlugin('dist'),
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: 'index.html',
     }),
-    new ExtractTextPlugin('css/main.[contenthash].css'),
+    new MiniCssExtractPlugin({
+      filename: debug ? 'css/[name].css' : 'css/[name].[hash].css',
+      chunkFilename: debug ? '[id].css' : '[id].[hash].css',
+    }),
   ].concat(debug ? [
     // development only
   ] : [
     // production only
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
     new CopyWebpackPlugin([
       { from: 'robots.txt' },
     ]),
