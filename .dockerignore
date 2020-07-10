@@ -1,0 +1,16 @@
+# repository
+.git
+.gitignore
+
+# editor
+.editorconfig
+.idea
+
+# docker
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# cache
+node_modules
+public

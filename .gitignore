@@ -159,4 +159,4 @@ jspm_packages
 *.css.map
 
 ### Build
-dist
+public

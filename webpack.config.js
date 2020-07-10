@@ -22,6 +22,11 @@ const debug = process.env.NODE_ENV !== 'production';
 module.exports = {
   context: path.join(__dirname, 'src'),
   devtool: debug ? 'inline-source-map' : false,
+  devServer: {
+    host: '0.0.0.0',
+    port: 80,
+    inline: true,
+  },
   mode: debug ? 'development' : 'production',
   entry: [
     './scripts/site.js',
@@ -54,14 +59,14 @@ module.exports = {
         options: {
           presets: ['env'],
         },
-      }, {
+      }].concat(debug ? [{
         loader: 'eslint-loader',
-      }],
+      }] : []),
     }],
   },
   output: {
     filename: debug ? 'js/[name].js' : 'js/[name].[hash].min.js',
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'public'),
     publicPath: '/',
   },
   plugins: [

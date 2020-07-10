@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+
+  nginx:
+    container_name: pietrum-nginx
+    image: nginx:1.19-alpine
+    ports:
+      - 80:80
+    volumes:
+      - mydata:/usr/share/nginx/html
+    depends_on:
+      - website
+
+  website:
+    container_name: pietrum-official-website
+    build: .
+    environment:
+      NODE_ENV: production
+    image: pietrum/prod/official-website
+    volumes:
+      - mydata:/usr/src/app/public
+    entrypoint:
+      - npm
+      - start
+
+volumes:
+  mydata:

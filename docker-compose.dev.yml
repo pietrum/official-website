@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+
+  website:
+    container_name: pietrum-official-website
+    build: .
+    environment:
+      NODE_ENV: development
+    image: pietrum/dev/official-website
+    ports:
+      - 80:80
+    volumes:
+      - ./src:/usr/src/app/src
+    entrypoint:
+      - npm
+      - run
+      - develop
