@@ -4,12 +4,12 @@ services:
 
   website:
     container_name: pietrum-official-website
-    build: .
     environment:
-      NODE_ENV: development
-    image: pietrum/dev/official-website
+      NODE_ENV: ${NODE_ENV:-production}
+    build: .
+    image: pietrum/${NODE_ENV:-production}/official-website:${TAG:-latest}
     ports:
-      - 80:80
+      - ${PORT:-80}:${PORT:-80}
     volumes:
       - ./src:/usr/src/app/src
     entrypoint:

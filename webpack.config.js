@@ -1,7 +1,13 @@
 /**
  * Load dependencies.
  */
+const dotenv = require('dotenv');
 const path = require('path');
+
+/**
+ * Configuration.
+ */
+dotenv.config();
 
 /**
  * Plugins
@@ -17,14 +23,14 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const debug = process.env.NODE_ENV !== 'production';
 
 /**
- * Configuration.
+ * Webpack initialize.
  */
 module.exports = {
   context: path.join(__dirname, 'src'),
   devtool: debug ? 'inline-source-map' : false,
   devServer: {
-    host: '0.0.0.0',
-    port: 80,
+    host: process.env.HOST || '0.0.0.0',
+    port: process.env.PORT || 80,
     inline: true,
   },
   mode: debug ? 'development' : 'production',

@@ -159,4 +159,5 @@ jspm_packages
 *.css.map
 
 ### Build
+.env
 public

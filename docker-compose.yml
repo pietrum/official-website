@@ -6,18 +6,18 @@ services:
     container_name: pietrum-nginx
     image: nginx:1.19-alpine
     ports:
-      - 80:80
+      - ${PORT:-80}:80
     volumes:
-      - mydata:/usr/share/nginx/html
+      - mydata:/usr/share/nginx/html:ro
     depends_on:
       - website
 
   website:
     container_name: pietrum-official-website
-    build: .
     environment:
-      NODE_ENV: production
-    image: pietrum/prod/official-website
+      NODE_ENV: ${NODE_ENV:-production}
+    build: .
+    image: pietrum/${NODE_ENV:-production}/official-website:${TAG:-latest}
     volumes:
       - mydata:/usr/src/app/public
     entrypoint:
