@@ -1,15 +1,18 @@
 # repository
 .git
 .gitignore
+*.md
 
 # editor
 .editorconfig
+.env
 .idea
 
 # docker
 .dockerignore
 Dockerfile
 docker-compose.yml
+docker-compose.prod.yml
 
 # cache
 node_modules

@@ -1,6 +1,18 @@
-# Install Node.js v10.x
-FROM node:dubnium-alpine
-MAINTAINER Fulkman
+# Install Node.js v10.x on alpine
+ARG NODE_TAG=dubnium-alpine3.11
+FROM node:${NODE_TAG}
+MAINTAINER Fulkman <fulkman@pietrum.pl>
+
+# Default to production, compose overrides this to development on build and run
+ARG NODE_ENV=production
+ENV NODE_ENV=$NODE_ENV
+ARG HOST=0.0.0.0
+ENV HOST=$HOST
+ARG PORT_TARGET=3000
+ENV PORT=$PORT_TARGET
+ARG PORT_PUBLISHED=$PORT_TARGET
+ENV PORT_PUBLISHED=$PORT_PUBLISHED
+EXPOSE $PORT
 
 # Create app directory
 RUN mkdir -p /usr/src/app
@@ -25,4 +37,4 @@ npm uninstall -g node-gyp; \
 apk del make gcc g++ python; \
 rm -rf ~/.cache
 
-CMD [ "npm", "run", "develop" ]
+CMD [ "npm", "start" ]

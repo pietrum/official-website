@@ -1,28 +1,19 @@
 version: "3.8"
 
 services:
-
-  nginx:
-    container_name: pietrum-nginx
-    image: nginx:1.19-alpine
-    ports:
-      - ${PORT:-80}:80
-    volumes:
-      - mydata:/usr/share/nginx/html:ro
-    depends_on:
-      - website
-
   website:
-    container_name: pietrum-official-website
-    environment:
-      NODE_ENV: ${NODE_ENV:-production}
-    build: .
-    image: pietrum/${NODE_ENV:-production}/official-website:${TAG:-latest}
+    image: pietrum/${NODE_ENV:-development}/official-website:${TAG:-latest}
+    build:
+      context: .
+      args:
+        - NODE_ENV=${NODE_ENV:-development}
+        - HOST=${HOST:-0.0.0.0}
+        - PORT_TARGET=${PORT_TARGET:-3000}
+        - PORT_PUBLISHED=${PORT_PUBLISHED:-80}
+    ports:
+      - ${PORT_PUBLISHED:-80}:${PORT_TARGET:-3000}
     volumes:
-      - mydata:/usr/src/app/public
-    entrypoint:
-      - npm
-      - start
-
-volumes:
-  mydata:
+      - ./src:/usr/src/app/src
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+    command: npm run develop

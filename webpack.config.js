@@ -30,8 +30,8 @@ module.exports = {
   devtool: debug ? 'inline-source-map' : false,
   devServer: {
     host: process.env.HOST || '0.0.0.0',
-    port: process.env.PORT || 80,
-    inline: true,
+    port: process.env.PORT || 3000,
+    sockPort: process.env.PORT_PUBLISHED || process.env.PORT || 3000,
   },
   mode: debug ? 'development' : 'production',
   entry: [
