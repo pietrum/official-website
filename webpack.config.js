@@ -12,10 +12,16 @@ dotenv.config();
 /**
  * Plugins
  */
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+// production
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// only for development
+let EslintWebpackPlugin;
+try {
+  EslintWebpackPlugin = require('eslint-webpack-plugin');
+} catch (e) {}
 
 /**
  * Debug
@@ -30,8 +36,13 @@ module.exports = {
   devtool: debug ? 'inline-source-map' : false,
   devServer: {
     host: process.env.HOST || '0.0.0.0',
-    port: process.env.PORT || 3000,
-    sockPort: process.env.PORT_PUBLISHED || process.env.PORT || 3000,
+    port: process.env.PORT || 8080,
+    sockPort: process.env.PORT_PUBLISHED || process.env.PORT || 8080,
+    injectClient: false,
+    watchOptions: {
+      aggregateTimeout: 500, // delay before reloading
+      poll: 1000, // enable polling since fsevents are not supported in docker
+    },
   },
   mode: debug ? 'development' : 'production',
   entry: [
@@ -65,14 +76,12 @@ module.exports = {
         options: {
           presets: ['env'],
         },
-      }].concat(debug ? [{
-        loader: 'eslint-loader',
-      }] : []),
+      }],
     }],
   },
   output: {
     filename: debug ? 'js/[name].js' : 'js/[name].[hash].min.js',
-    path: path.join(__dirname, 'public'),
+    path: path.join(__dirname, process.env.DEST || 'dist'),
     publicPath: '/',
   },
   plugins: [
@@ -87,10 +96,13 @@ module.exports = {
     }),
   ].concat(debug ? [
     // development only
+    new EslintWebpackPlugin(),
   ] : [
     // production only
-    new CopyWebpackPlugin([
-      { from: 'robots.txt' },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'robots.txt' },
+      ],
+    }),
   ]),
 };

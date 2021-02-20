@@ -15,5 +15,5 @@ docker-compose.yml
 docker-compose.prod.yml
 
 # cache
+dist
 node_modules
-public

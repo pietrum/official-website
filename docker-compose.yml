@@ -7,13 +7,10 @@ services:
       context: .
       args:
         - NODE_ENV=${NODE_ENV:-development}
-        - HOST=${HOST:-0.0.0.0}
-        - PORT_TARGET=${PORT_TARGET:-3000}
-        - PORT_PUBLISHED=${PORT_PUBLISHED:-80}
     ports:
-      - ${PORT_PUBLISHED:-80}:${PORT_TARGET:-3000}
+      - ${PORT_PUBLISHED:-80}:${PORT:-8080}
     volumes:
-      - ./src:/usr/src/app/src
+      - ./src:/usr/src/app/src:rw
     environment:
       - NODE_ENV=${NODE_ENV:-development}
     command: npm run develop

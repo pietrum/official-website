@@ -4,4 +4,4 @@ services:
   website:
     image: pietrum/official-website:${TAG:-latest}
     ports:
-      - ${PORT_PUBLISHED:-80}:${PORT:-3000}
+      - ${PORT_PUBLISHED:-80}:${PORT:-8080}

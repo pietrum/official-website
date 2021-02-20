@@ -160,4 +160,4 @@ jspm_packages
 
 ### Build
 .env
-public
+dist
