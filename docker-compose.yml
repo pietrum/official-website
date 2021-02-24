@@ -5,6 +5,7 @@ services:
     image: pietrum/${NODE_ENV:-development}/official-website:${TAG:-latest}
     build:
       context: .
+      target: develop
       args:
         - NODE_ENV=${NODE_ENV:-development}
     ports:
@@ -13,4 +14,3 @@ services:
       - ./src:/usr/src/app/src:rw
     environment:
       - NODE_ENV=${NODE_ENV:-development}
-    command: npm run develop

@@ -15,13 +15,9 @@ dotenv.config();
 // production
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const EslintWebpackPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-// only for development
-let EslintWebpackPlugin;
-try {
-  EslintWebpackPlugin = require('eslint-webpack-plugin');
-} catch (e) {}
 
 /**
  * Debug
@@ -81,7 +77,7 @@ module.exports = {
   },
   output: {
     filename: debug ? 'js/[name].js' : 'js/[name].[hash].min.js',
-    path: path.join(__dirname, process.env.DEST || 'dist'),
+    path: path.join(__dirname, 'dist'),
     publicPath: '/',
   },
   plugins: [
