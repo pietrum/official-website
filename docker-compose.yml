@@ -1,16 +1,25 @@
 version: "3.8"
 
 services:
-  website:
+  official-website:
     image: pietrum/${NODE_ENV:-development}/official-website:${TAG:-latest}
     build:
       context: .
       target: develop
       args:
         - NODE_ENV=${NODE_ENV:-development}
-    ports:
-      - ${PORT_PUBLISHED:-80}:${PORT:-8080}
     volumes:
       - ./src:/usr/src/app/src:rw
     environment:
+      - DOMAIN=${DOMAIN:-local.pietrum.pl}
       - NODE_ENV=${NODE_ENV:-development}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pietrum_official-website.entrypoints=web"
+      - "traefik.http.routers.pietrum_official-website.rule=Host(`${DOMAIN:-local.pietrum.pl}`)"
+      - "traefik.http.services.pietrum_official-website.loadbalancer.server.port=8080"
+
+networks:
+  default:
+    name: hxh
+    external: true

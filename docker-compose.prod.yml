@@ -1,7 +1,23 @@
 version: "3.8"
 
 services:
-  website:
+  official-website:
     image: pietrum/official-website:${TAG:-latest}
-    ports:
-      - ${PORT_PUBLISHED:-80}:${PORT:-8080}
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.pietrum_official-website.entrypoints=websecure"
+        - "traefik.http.routers.pietrum_official-website.tls.certresolver=myresolver"
+        - "traefik.http.routers.pietrum_official-website.rule=Host(`${DOMAIN:-pietrum.pl}`) || Host(`www.${DOMAIN:-pietrum.pl}`)"
+        - "traefik.http.services.pietrum_official-website.loadbalancer.server.port=8080"
+        # MIDDLEWARE
+        # non-www to www
+        - "traefik.http.middlewares.redirect-non-www-to-www.redirectregex.regex=^https://(?:www.)?${DOMAIN:-pietrum.pl}/(.*)"
+        - "traefik.http.middlewares.redirect-non-www-to-www.redirectregex.replacement=https://www.${DOMAIN:-pietrum.pl}/$${1}"
+        - "traefik.http.middlewares.redirect-non-www-to-www.redirectregex.permanent=true"
+        - "traefik.http.routers.pietrum_official-website.middlewares=redirect-non-www-to-www"
+
+networks:
+  default:
+    name: hxh
+    external: true

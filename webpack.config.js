@@ -31,6 +31,7 @@ module.exports = {
   context: path.join(__dirname, 'src'),
   devtool: debug ? 'inline-source-map' : false,
   devServer: {
+    allowedHosts: [`www.${process.env.DOMAIN}`, process.env.DOMAIN],
     host: process.env.HOST || '0.0.0.0',
     port: process.env.PORT || 8080,
     sockPort: process.env.PORT_PUBLISHED || process.env.PORT || 8080,
