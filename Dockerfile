@@ -38,6 +38,7 @@ apk update; \
 apk add --no-cache make gcc g++ python; \
 #
 # For compile npm module
+npm install -g npm; \
 npm install -g node-gyp; \
 #
 # Install app dependencies

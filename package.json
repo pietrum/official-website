@@ -1,8 +1,8 @@
 {
   "name": "official-website",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "description": "Official Pietrum Website",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
     "develop": "webpack serve",
     "start": "webpack",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:Pietrum/official-website.git"
+    "url": "git+ssh://git@github.com:pietrum/official-website.git"
   },
   "keywords": [
     "Pietrum"
   ],
-  "author": "Fulkman <fulkman@pietrum.pl> (http://www.pietrum.pl)",
-  "license": "ISC",
-  "homepage": "https://github.com/Pietrum/official-website#readme",
+  "author": "Fulkman <fulkman@pietrum.pl> (https://www.pietrum.pl)",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/pietrum/official-website#readme",
   "dependencies": {
     "@babel/core": "^7.12.17",
     "babel-loader": "^8.2.2",
