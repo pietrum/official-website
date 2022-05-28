@@ -11,11 +11,11 @@ services:
         - "traefik.http.routers.pietrum_official-website.rule=Host(`${DOMAIN:-pietrum.pl}`) || Host(`www.${DOMAIN:-pietrum.pl}`)"
         - "traefik.http.services.pietrum_official-website.loadbalancer.server.port=8080"
         # MIDDLEWARE
-        # non-www to www
-        - "traefik.http.middlewares.redirect-non-www-to-www.redirectregex.regex=^https://(?:www.)?${DOMAIN:-pietrum.pl}/(.*)"
-        - "traefik.http.middlewares.redirect-non-www-to-www.redirectregex.replacement=https://www.${DOMAIN:-pietrum.pl}/$${1}"
-        - "traefik.http.middlewares.redirect-non-www-to-www.redirectregex.permanent=true"
-        - "traefik.http.routers.pietrum_official-website.middlewares=redirect-non-www-to-www"
+        # www to non-www
+        - "traefik.http.middlewares.redirect-www-to-non-www.redirectregex.regex=^https://www\\.${DOMAIN:-pietrum.pl}/(.*)"
+        - "traefik.http.middlewares.redirect-www-to-non-www.redirectregex.replacement=https://${DOMAIN:-pietrum.pl}/$${1}"
+        - "traefik.http.middlewares.redirect-www-to-non-www.redirectregex.permanent=true"
+        - "traefik.http.routers.pietrum_official-website.middlewares=redirect-www-to-non-www"
 
 networks:
   default:
